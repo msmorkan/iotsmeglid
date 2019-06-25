@@ -17,6 +17,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
             #print(self.reader)
         except Exception as e:
             #print(e.args)
+            print("exceptiona geeeelll")
             self.writer.close()
             self.ws_server.unregister(self)
 
@@ -26,7 +27,6 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
         if path == '/ws':
             # HACK: Put the read data back, to continue with normal WS handling.
             self.reader.feed_data(bytes(request_line))
-            self.reader.feed_data("\r\n")
             self.reader.feed_data(headers.as_bytes().replace(b'\n', b'\r\n'))
             print("ws hallettik")
             return await super(HttpWSSProtocol, self).handler()
