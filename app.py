@@ -11,8 +11,9 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
     async def handler(self):
         try:
             #while True:
-            headers = await websockets.http.read_headers(self.reader)
+            
             request_line = await websockets.http.read_line(self.reader)
+            headers = await websockets.http.read_headers(self.reader)
             #print(headers)
             print(request_line)
             headers = websockets.http.read_headers(self.reader)
