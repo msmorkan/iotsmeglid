@@ -14,10 +14,10 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
             request_line = await websockets.http.read_line(self.reader)
             #print(headers)
             print(request_line)
-            headers = websockets.http.read_headers(self.reader)
+            headers = await websockets.http.read_headers(self.reader).str()
             print(headers)
             method, path, version = request_line.decode().split(None, 2)
-            #print(self.reader)
+            print(method, path, version)
         except Exception as e:
             #print(e.args)
             self.writer.close()
