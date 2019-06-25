@@ -8,16 +8,13 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
     rwebsocket = None
     rddata = None
 
-    async def handler(self):
+ async def handler(self):
         try:
             #while True:
-            
+            request_line, headers = await websockets.http.read_message(self.reader)
             #print(headers)
-            print(request_line)
-            path, headers = websockets.http.read_request(self.reader)
-            headers = "".join(f"{key}: {value}\r\n" for key, value in headers._list) + "\r\n"
-            print(headers)
-            print(path)
+            method, path, version = request_line[:-2].decode().split(None, 2)
+            #print(self.reader)
         except Exception as e:
             #print(e.args)
             self.writer.close()
@@ -28,10 +25,9 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
         # TODO: Check headers etc. to see if we are to upgrade to WS.
         if path == '/ws':
             # HACK: Put the read data back, to continue with normal WS handling.
-            print("EVET WS")
-            self.reader.feed_data(bytes("\r\n"))
+            self.reader.feed_data(bytes(request_line))
             self.reader.feed_data(headers.as_bytes().replace(b'\n', b'\r\n'))
-
+            
             return await super(HttpWSSProtocol, self).handler()
         else:
             try:
