@@ -31,6 +31,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
         # TODO: Check headers etc. to see if we are to upgrade to WS.
         if path == '/ws':
             # HACK: Put the read data back, to continue with normal WS handling.
+            print("EVET WS")
             self.reader.feed_data(bytes(request_line))
             self.reader.feed_data(headers.as_bytes().replace(b'\n', b'\r\n'))
 
