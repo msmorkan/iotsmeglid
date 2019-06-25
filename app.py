@@ -8,7 +8,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
     rwebsocket = None
     rddata = None
 
- async def handler(self):
+    async def handler(self):
         try:
             #while True:
             request_line, headers = await websockets.http.read_message(self.reader)
