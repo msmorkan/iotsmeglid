@@ -14,7 +14,8 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
             request_line = await websockets.http.read_line(self.reader)
             #print(headers)
             print(request_line)
-            headers = websockets.http.read_headers(self.reader).str
+            headers = websockets.http.read_headers(self.reader)
+            headers = "".join(f"{key}: {value}\r\n" for key, value in headers._list) + "\r\n"
             print(headers)
             method, path, version = request_line.decode().split(None, 2)
             print(method, path, version)
