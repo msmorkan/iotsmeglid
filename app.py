@@ -145,7 +145,7 @@ def _read_ready(self):
 asyncio.selector_events._SelectorSocketTransport._read_ready = _read_ready
 
 port = int(os.getenv('PORT', 5687))#5687
-start_server = websockets.serve(ws_handler, '', port, klass=HttpWSSProtocol)
+start_server = websockets.serve(ws_handler, '0.0.0.0', port, klass=HttpWSSProtocol)
 # logger.info('Listening on port %d', port)
 
 asyncio.get_event_loop().run_until_complete(start_server)
