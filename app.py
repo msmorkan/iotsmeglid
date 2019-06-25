@@ -16,7 +16,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
             method, path, version = request_line[:-2].decode().split(None, 2)
             #print(self.reader)
         except Exception as e:
-            #print(e.args)
+            print(e.args)
             print("exceptiona geeeelll")
             self.writer.close()
             self.ws_server.unregister(self)
