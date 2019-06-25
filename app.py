@@ -11,14 +11,14 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
     async def handler(self):
         try:
             #while True:
-            headers = websockets.http.read_headers(self.reader)
+            headers = await websockets.http.read_headers(self.reader)
             request_line = await websockets.http.read_line(self.reader)
             #print(headers)
             print(request_line)
             headers = websockets.http.read_headers(self.reader)
             headers = "".join(f"{key}: {value}\r\n" for key, value in headers._list) + "\r\n"
             print(headers)
-            method, path, version = request_line.decode().split(None, 2)
+            method, path, version = request_line.split(b" ", 2)
             print(method, path, version)
         except Exception as e:
             #print(e.args)
