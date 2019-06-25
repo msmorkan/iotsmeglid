@@ -12,15 +12,12 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
         try:
             #while True:
             
-            request_line = await websockets.http.read_line(self.reader)
-            headers = await websockets.http.read_headers(self.reader)
             #print(headers)
             print(request_line)
-            headers = websockets.http.read_headers(self.reader)
+            path, headers = websockets.http.read_request(self.reader)
             headers = "".join(f"{key}: {value}\r\n" for key, value in headers._list) + "\r\n"
             print(headers)
-            method, path, version = request_line.split(b" ", 2)
-            print(method, path, version)
+            print(path)
         except Exception as e:
             #print(e.args)
             self.writer.close()
@@ -32,7 +29,7 @@ class HttpWSSProtocol(websockets.WebSocketServerProtocol):
         if path == '/ws':
             # HACK: Put the read data back, to continue with normal WS handling.
             print("EVET WS")
-            self.reader.feed_data(bytes(request_line))
+            self.reader.feed_data(bytes("\r\n"))
             self.reader.feed_data(headers.as_bytes().replace(b'\n', b'\r\n'))
 
             return await super(HttpWSSProtocol, self).handler()
